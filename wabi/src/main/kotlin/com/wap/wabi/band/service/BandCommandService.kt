@@ -76,7 +76,6 @@ class BandCommandService(
         return enrollByDto(bandId, bandStudentDtos)
     }
 
-    @Transactional
     fun enrollByDto(bandId: Long, bandStudentDtos: List<BandStudentDto>): Long {
         val request = BandStudentEnrollRequest(bandStudentDtos)
         return enrollBandStudent(bandId, request)
