@@ -14,7 +14,6 @@ import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZonedDateTime
 
 @Service
 class EventAttendaneService(
@@ -22,7 +21,7 @@ class EventAttendaneService(
     private val studentRepository: StudentRepository,
     private val eventStudentRepository: EventStudentRepository,
 
-    private val eventPublisher : ApplicationEventPublisher //스프링 이벤트 발행자
+    private val eventPublisher: ApplicationEventPublisher //스프링 이벤트 발행자
 ) {
     @Transactional
     fun checkIn(checkInRequest: CheckInRequest): EventStudentStatus {
@@ -38,9 +37,12 @@ class EventAttendaneService(
             AttendanceCompletedEvent(
                 studentId = eventStudent.student.id,
                 eventId = eventStudent.event.id,
+                eventName = eventStudent.event.name,
                 checkInTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
             )
         )
+
+
 
         return status
     }
