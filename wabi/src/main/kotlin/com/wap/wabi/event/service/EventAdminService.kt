@@ -3,12 +3,10 @@ package com.wap.wabi.event.service
 import com.wap.wabi.band.entity.Band
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
-import com.wap.wabi.event.entity.Enum.EventStudentStatus
 import com.wap.wabi.event.entity.Event
 import com.wap.wabi.event.entity.EventBand
 import com.wap.wabi.event.entity.EventStudent
 import com.wap.wabi.event.entity.EventStudentBandName
-import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.event.payload.request.EventCreateRequest
 import com.wap.wabi.event.payload.request.EventUpdateRequest
 import com.wap.wabi.event.payload.request.InsertEventStudentRequest
@@ -24,7 +22,7 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
 @Service
-class EventCommandService(
+class EventAdminService(
     private val eventRepository: EventRepository,
     private val eventStudentRepository: EventStudentRepository,
     private val studentRepository: StudentRepository,
@@ -33,15 +31,6 @@ class EventCommandService(
     private val bandStudentRepository: BandStudentRepository,
     private val eventStudentBandNameRepository: EventStudentBandNameRepository
 ) {
-    @Transactional
-    fun checkIn(checkInRequest: CheckInRequest): EventStudentStatus {
-        val eventStudent = findEventStudent(checkInRequest)
-
-        if (eventStudent.status.equals(EventStudentStatus.CHECK_IN)) {
-            throw RestApiException(ErrorCode.ALREADY_CHECK_IN)
-        }
-        return eventStudent.checkIn()
-    }
 
     @Transactional
     fun createEvent(adminId: Long, eventCreateRequest: EventCreateRequest): Event {
@@ -125,23 +114,6 @@ class EventCommandService(
         eventStudentRepository.deleteByEvent(event)
         eventBandRepository.deleteByEvent(event)
         eventRepository.delete(event)
-    }
-
-    @Transactional
-    fun patchCheckIn(checkInRequest: CheckInRequest): Boolean {
-        val eventStudent = findEventStudent(checkInRequest)
-
-        return eventStudent.patchCheckIn()
-    }
-
-    private fun findEventStudent(checkInRequest: CheckInRequest): EventStudent {
-        val student = studentRepository.findById(checkInRequest.studentId)
-            .orElseThrow { RestApiException(ErrorCode.NOT_FOUND_STUDENT) }
-        val event = eventRepository.findById(checkInRequest.eventId)
-            .orElseThrow { RestApiException(ErrorCode.NOT_FOUND_EVENT) }
-        val eventStudent = eventStudentRepository.findByStudentAndEvent(student, event)
-            .orElseThrow { RestApiException(ErrorCode.UNAUTHORIZED_CHECK_IN) }
-        return eventStudent
     }
 
     fun insertStudent(adminId: Long, request: InsertEventStudentRequest) {

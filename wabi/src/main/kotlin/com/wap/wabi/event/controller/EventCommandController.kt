@@ -7,7 +7,8 @@ import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.event.payload.request.EventCreateRequest
 import com.wap.wabi.event.payload.request.EventUpdateRequest
 import com.wap.wabi.event.payload.request.InsertEventStudentRequest
-import com.wap.wabi.event.service.EventCommandService
+import com.wap.wabi.event.service.EventAdminService
+import com.wap.wabi.event.service.EventAttendaneService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,7 +24,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/events")
 class EventCommandController(
-    private val eventCommandService: EventCommandService,
+    private val eventAdminService: EventAdminService,
+    private val eventAttendaneService: EventAttendaneService,
     private val jwtTokenProvider: JwtTokenProvider,
     private val adminService: AdminService
 ) {
@@ -34,7 +36,7 @@ class EventCommandController(
     ): ResponseEntity<Response> {
         val adminName = jwtTokenProvider.getAdminName()
         val adminId = adminService.getAdminId(adminName = adminName)
-        eventCommandService.createEvent(adminId = adminId, eventCreateRequest = request)
+        eventAdminService.createEvent(adminId = adminId, eventCreateRequest = request)
 
         val response = Response.ok(message = "success create event")
         return ResponseEntity(response, HttpStatus.OK)
@@ -47,7 +49,7 @@ class EventCommandController(
     ): ResponseEntity<Response> {
         val adminName = jwtTokenProvider.getAdminName()
         val adminId = adminService.getAdminId(adminName = adminName)
-        eventCommandService.updateEvent(adminId = adminId, eventUpdateRequest = request)
+        eventAdminService.updateEvent(adminId = adminId, eventUpdateRequest = request)
 
         val response = Response.ok(message = "success update event")
         return ResponseEntity(response, HttpStatus.OK)
@@ -60,7 +62,7 @@ class EventCommandController(
     ): ResponseEntity<Response> {
         val adminName = jwtTokenProvider.getAdminName()
         val adminId = adminService.getAdminId(adminName = adminName)
-        eventCommandService.deleteEvent(adminId = adminId, eventId = eventId)
+        eventAdminService.deleteEvent(adminId = adminId, eventId = eventId)
 
         val response = Response.ok(message = "success delete event")
         return ResponseEntity(response, HttpStatus.OK)
@@ -69,7 +71,7 @@ class EventCommandController(
     @PostMapping("/check-in")
     @Operation(summary = "체크인")
     fun checkIn(@RequestBody checkInRequest: CheckInRequest): ResponseEntity<Response> {
-        eventCommandService.checkIn(checkInRequest = checkInRequest)
+        eventAttendaneService.checkIn(checkInRequest = checkInRequest)
 
         val response = Response.ok()
         return ResponseEntity(response, HttpStatus.OK)
@@ -78,7 +80,7 @@ class EventCommandController(
     @PatchMapping("/check-in-manual")
     @Operation(summary = "수동 체크인")
     fun patchCheckIn(@RequestBody checkInRequest: CheckInRequest): ResponseEntity<Response> {
-        val added = eventCommandService.patchCheckIn(checkInRequest = checkInRequest)
+        val added = eventAttendaneService.patchCheckIn(checkInRequest = checkInRequest)
 
         if (added) {
             val response = Response.ok(message = "체크인 완료")
@@ -95,7 +97,7 @@ class EventCommandController(
     ): ResponseEntity<Response> {
         val adminName = jwtTokenProvider.getAdminName()
         val adminId = adminService.getAdminId(adminName = adminName)
-        eventCommandService.insertStudent(adminId = adminId, request = request)
+        eventAdminService.insertStudent(adminId = adminId, request = request)
 
         val response = Response.ok(message = "success insert student")
         return ResponseEntity(response, HttpStatus.OK)
@@ -109,7 +111,7 @@ class EventCommandController(
     ): ResponseEntity<Response> {
         val adminName = jwtTokenProvider.getAdminName()
         val adminId = adminService.getAdminId(adminName = adminName)
-        eventCommandService.deleteStudent(adminId = adminId, eventId = eventId, studentId = studentId)
+        eventAdminService.deleteStudent(adminId = adminId, eventId = eventId, studentId = studentId)
 
         val response = Response.ok(message = "success create event")
         return ResponseEntity(response, HttpStatus.OK)

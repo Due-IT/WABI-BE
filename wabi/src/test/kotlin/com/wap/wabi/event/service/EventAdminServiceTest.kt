@@ -32,12 +32,9 @@ import java.util.*
 @Transactional
 @SpringBootTest
 @SuppressWarnings("NonAsciiCharacters")
-class EventCommandServiceTest {
-    @MockBean
-    private lateinit var studentRepository: StudentRepository
-
-    @MockBean
-    private lateinit var eventStudentRepository: EventStudentRepository
+class EventAdminServiceTest {
+    @Autowired
+    private lateinit var eventAdminService: EventAdminService
 
     @MockBean
     private lateinit var eventRepository: EventRepository
@@ -46,14 +43,14 @@ class EventCommandServiceTest {
     private lateinit var eventBandRepository: EventBandRepository
 
     @MockBean
+    private lateinit var eventStudentRepository: EventStudentRepository
+
+
+    @MockBean
     private lateinit var bandRepository: BandRepository
 
     @MockBean
     private lateinit var bandStudentRepository: BandStudentRepository
-
-    @Autowired
-    private lateinit var eventCommandService: EventCommandService
-
 
     @Test
     fun 이벤트를_생성한다() {
@@ -78,7 +75,7 @@ class EventCommandServiceTest {
 
         //When
         val result =
-            eventCommandService.createEvent(adminId = TestConstants.ADMIN_ID, eventCreateRequest = eventCreateRequest)
+            eventAdminService.createEvent(adminId = TestConstants.ADMIN_ID, eventCreateRequest = eventCreateRequest)
 
         //Then
         assertThat(result.id).isEqualTo(savedEvent.id)
@@ -103,7 +100,7 @@ class EventCommandServiceTest {
         val expected = 1L
 
         //When
-        val result = eventCommandService.saveEventStudentsFromBand(event = event1, band = band1)
+        val result = eventAdminService.saveEventStudentsFromBand(event = event1, band = band1)
 
         //Then
         assertThat(result).isEqualTo(expected)
@@ -130,7 +127,7 @@ class EventCommandServiceTest {
 
         //When
         val result =
-            eventCommandService.updateEvent(adminId = TestConstants.ADMIN_ID, eventUpdateRequest = eventUpdateRequest)
+            eventAdminService.updateEvent(adminId = TestConstants.ADMIN_ID, eventUpdateRequest = eventUpdateRequest)
 
         //Then
         assertThat(result.name).isEqualTo(updatedEvent.name)
@@ -145,35 +142,10 @@ class EventCommandServiceTest {
         Mockito.`when`(eventRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(event))
 
         //When
-        eventCommandService.deleteEvent(adminId = TestConstants.ADMIN_ID, eventId = eventId)
+        eventAdminService.deleteEvent(adminId = TestConstants.ADMIN_ID, eventId = eventId)
 
         //Then
         Mockito.verify(eventRepository, Mockito.times(1)).delete(event)
     }
-
-    @Test
-    fun 이벤트에_체크인_한다() {
-        //Given
-        val checkInRequest = CheckInRequest(
-            studentId = "201912050", eventId = 1
-        )
-
-        val event = EventFixture.createEvent(id = 1, name = "Event 1")
-        val band = BandFixture.createBand(id = 1, name = "Band 1")
-        val student = StudentFixture.createStudent(id = "201912050", name = "Student1")
-        val eventStudent = EventStudentFixture.createEventStudent(id = 1, event = event, student = student)
-
-        Mockito.`when`(studentRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(student))
-        Mockito.`when`(eventRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(event))
-        Mockito.`when`(eventStudentRepository.findByStudentAndEvent(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(Optional.of(eventStudent))
-
-        //When
-        val result = eventCommandService.checkIn(checkInRequest)
-
-        //Then
-        assertThat(result).isEqualTo(EventStudentStatus.CHECK_IN)
-    }
-
 
 }
