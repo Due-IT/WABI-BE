@@ -5,17 +5,14 @@ import com.wap.wabi.band.fixture.BandStudentFixture
 import com.wap.wabi.band.repository.BandRepository
 import com.wap.wabi.band.repository.BandStudentRepository
 import com.wap.wabi.common.TestConstants
-import com.wap.wabi.event.entity.Enum.EventStudentStatus
 import com.wap.wabi.event.fixture.EventFixture
 import com.wap.wabi.event.fixture.EventStudentFixture
-import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.event.payload.request.EventCreateRequest
 import com.wap.wabi.event.payload.request.EventUpdateRequest
 import com.wap.wabi.event.repository.EventBandRepository
 import com.wap.wabi.event.repository.EventRepository
 import com.wap.wabi.event.repository.EventStudentRepository
 import com.wap.wabi.student.fixture.StudentFixture
-import com.wap.wabi.student.repository.StudentRepository
 import jakarta.transaction.Transactional
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

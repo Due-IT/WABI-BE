@@ -2,6 +2,7 @@ package com.wap.wabi.event.service
 
 import com.wap.wabi.event.entity.Enum.EventStudentStatus
 import com.wap.wabi.event.entity.EventStudent
+import com.wap.wabi.event.event.AttendanceCompletedEvent
 import com.wap.wabi.event.payload.request.CheckInRequest
 import com.wap.wabi.event.repository.EventRepository
 import com.wap.wabi.event.repository.EventStudentRepository
@@ -11,6 +12,9 @@ import com.wap.wabi.student.repository.StudentRepository
 import jakarta.transaction.Transactional
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 @Service
 class EventAttendaneService(
@@ -27,7 +31,18 @@ class EventAttendaneService(
         if (eventStudent.status.equals(EventStudentStatus.CHECK_IN)) {
             throw RestApiException(ErrorCode.ALREADY_CHECK_IN)
         }
-        return eventStudent.checkIn()
+
+        val status = eventStudent.checkIn()
+
+        eventPublisher.publishEvent(
+            AttendanceCompletedEvent(
+                studentId = eventStudent.student.id,
+                eventId = eventStudent.event.id,
+                checkInTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
+            )
+        )
+
+        return status
     }
 
     private fun findEventStudent(checkInRequest: CheckInRequest): EventStudent {
