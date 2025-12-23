@@ -1,6 +1,5 @@
 package com.wap.wabi.student.fixture
 
-import com.wap.wabi.common.Reflection
 import com.wap.wabi.student.entity.Student
 
 object StudentFixture {

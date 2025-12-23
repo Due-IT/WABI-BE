@@ -1,9 +1,9 @@
 package com.wap.wabi.event.fixture
 
-import com.wap.wabi.common.Reflection
 import com.wap.wabi.event.entity.Event
 import com.wap.wabi.event.entity.EventStudent
 import com.wap.wabi.student.entity.Student
+import org.springframework.test.util.ReflectionTestUtils
 
 object EventStudentFixture {
     fun createEventStudent(event: Event, student: Student): EventStudent {
@@ -15,6 +15,7 @@ object EventStudentFixture {
 
     fun createEventStudent(id: Long, event: Event, student: Student): EventStudent {
         val eventStudent = createEventStudent(event, student)
-        return Reflection.makeIdChangedClone(EventStudent::class.java, eventStudent, id)
+        ReflectionTestUtils.setField(eventStudent, "id", id)
+        return eventStudent
     }
 }
