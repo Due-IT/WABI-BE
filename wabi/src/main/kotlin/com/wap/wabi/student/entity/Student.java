@@ -14,15 +14,18 @@ public class Student {
     @NotNull
     private String id;
     private String name;
+    private String email;
 
     private Student(builder builder) {
         this.id = builder.id;
         this.name = builder.name;
+        this.email = builder.email;
     }
 
     public static class builder {
         private String id;
         private String name;
+        private String email;
 
         public builder id(@NotNull String id) {
             this.id = id;
@@ -31,6 +34,11 @@ public class Student {
 
         public builder name(String name) {
             this.name = name;
+            return this;
+        }
+
+        public builder email(String email) {
+            this.email = email;
             return this;
         }
 
@@ -49,6 +57,10 @@ public class Student {
 
     public String getName() {
         return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @PrePersist

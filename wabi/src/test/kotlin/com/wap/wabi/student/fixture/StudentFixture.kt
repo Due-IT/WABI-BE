@@ -7,6 +7,7 @@ object StudentFixture {
         return Student.builder()
             .id("201913050")
             .name(name)
+            .email("abc@abc.com")
             .build()
     }
 
@@ -14,6 +15,7 @@ object StudentFixture {
         return Student.builder()
             .id(id)
             .name(name)
+            .email("abc@abc.com")
             .build()
     }
 }

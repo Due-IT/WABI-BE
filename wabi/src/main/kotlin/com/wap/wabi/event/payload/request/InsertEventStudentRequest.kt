@@ -4,5 +4,6 @@ class InsertEventStudentRequest(
     val eventId: Long,
     val studentId: String,
     val studentName: String,
+    val studentEmail: String
 ) {
 }

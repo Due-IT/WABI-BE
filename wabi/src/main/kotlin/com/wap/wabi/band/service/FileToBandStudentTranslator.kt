@@ -4,11 +4,7 @@ import com.opencsv.CSVReader
 import com.wap.wabi.band.payload.BandStudentDto
 import com.wap.wabi.exception.ErrorCode
 import com.wap.wabi.exception.RestApiException
-import org.apache.poi.ss.usermodel.Cell
-import org.apache.poi.ss.usermodel.CellType
-import org.apache.poi.ss.usermodel.DateUtil
-import org.apache.poi.ss.usermodel.Workbook
-import org.apache.poi.ss.usermodel.WorkbookFactory
+import org.apache.poi.ss.usermodel.*
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.InputStreamReader
@@ -44,6 +40,8 @@ class FileToBandStudentTranslator(
                 nextLine!![headerMap["학번"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_STUDENT_ID_COLUMN)]
             val studentName =
                 nextLine!![headerMap["성명"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_NAME_COLUMN)]
+            val studentEmail =
+                nextLine!![headerMap["이메일"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_STUDENT_EMAIL_COLUMN)]
             if (studentId.isNullOrBlank() || studentName.isNullOrBlank()) {
                 continue
             }
@@ -55,7 +53,7 @@ class FileToBandStudentTranslator(
                 continue
             }
 
-            val bandStudentDto = BandStudentDto(studentId, studentName, headerMap["동아리명"]?.let {
+            val bandStudentDto = BandStudentDto(studentId, studentName, studentEmail, headerMap["동아리명"]?.let {
                 nextLine?.get(it)
             }, headerMap["직책"]?.let {
                 nextLine?.get(it)
@@ -101,11 +99,16 @@ class FileToBandStudentTranslator(
                     headerMap["성명"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_NAME_COLUMN)
                 )
             )
+            val studentEmail = getCellValueAsString(
+                row.getCell(
+                    headerMap["이메일"] ?: throw RestApiException(ErrorCode.BAD_REQUEST_FILE_STUDENT_EMAIL_COLUMN)
+                )
+            )
             if (studentId.isNullOrBlank() || studentName.isNullOrBlank()) {
                 continue
             }
 
-            val bandStudentDto = BandStudentDto(studentId, studentName, headerMap["동아리명"]?.let {
+            val bandStudentDto = BandStudentDto(studentId, studentName, studentEmail, headerMap["동아리명"]?.let {
                 getCellValueAsString(row.getCell(it))
             }, headerMap["직책"]?.let {
                 getCellValueAsString(row.getCell(it))

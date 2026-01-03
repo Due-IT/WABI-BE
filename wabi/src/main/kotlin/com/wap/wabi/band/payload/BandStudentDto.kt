@@ -5,6 +5,7 @@ import java.time.LocalDate
 data class BandStudentDto(
     val studentId: String,
     val name: String,
+    val email: String,
     val club: String?,
     val position: String?,
     val joinDate: LocalDate?,

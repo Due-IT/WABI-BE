@@ -128,6 +128,7 @@ class EventAdminService(
                     Student.builder()
                         .id(request.studentId)
                         .name(request.studentName)
+                        .email(request.studentEmail)
                         .build()
                 )
             }

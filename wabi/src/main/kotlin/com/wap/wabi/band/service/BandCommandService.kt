@@ -89,11 +89,13 @@ class BandCommandService(
         request.bandStudentDtos.forEach { bandStudentDto ->
             val studentId = bandStudentDto.studentId
             val studentName = bandStudentDto.name
+            val studentEmail = bandStudentDto.email
             val student = studentRepository.findById(studentId).orElseGet {
                 studentRepository.save(
                     Student.builder()
                         .id(studentId)
                         .name(studentName)
+                        .email(studentEmail)
                         .build()
                 )
             }
