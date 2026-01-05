@@ -1,7 +1,6 @@
 package com.wap.wabi.band.service
 
 import com.wap.wabi.band.fixture.BandFixture
-import com.wap.wabi.band.fixture.BandStudentFixture
 import com.wap.wabi.band.payload.BandStudentDto
 import com.wap.wabi.band.payload.request.BandCreateRequest
 import com.wap.wabi.band.payload.request.BandStudentEnrollRequest
@@ -49,6 +48,7 @@ class BandCommandServiceTest {
 
         val studentId = "201913050"
         val name = "김종경"
+        val email = "abc@abc.com"
         val club = "WAP"
         val position = "회원"
         val joinDate = LocalDate.parse("2023-09-03")
@@ -59,6 +59,7 @@ class BandCommandServiceTest {
         val bandStudentDto = BandStudentDto(
             studentId = studentId,
             name = name,
+            email = email,
             club = club,
             position = position,
             joinDate = joinDate,
@@ -89,6 +90,7 @@ class BandCommandServiceTest {
 
         val studentId = "201913050"
         val name = "김종경"
+        val email = "abc@abc.com"
         val club = "WAP"
         val position = "회원"
         val joinDate = LocalDate.parse("2023-09-03")
@@ -99,6 +101,7 @@ class BandCommandServiceTest {
         val bandStudentDto = BandStudentDto(
             studentId = studentId,
             name = name,
+            email = email,
             club = club,
             position = position,
             joinDate = joinDate,

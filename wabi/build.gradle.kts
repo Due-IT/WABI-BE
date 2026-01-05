@@ -21,6 +21,9 @@ repositories {
 }
 
 dependencies {
+    //Email
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+
     //Monitoring
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus")

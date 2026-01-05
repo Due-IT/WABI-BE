@@ -36,13 +36,13 @@ class EventAttendaneService(
         eventPublisher.publishEvent(
             AttendanceCompletedEvent(
                 studentId = eventStudent.student.id,
+                studentName = eventStudent.student.name,
+                studentEmail = eventStudent.student.email,
                 eventId = eventStudent.event.id,
                 eventName = eventStudent.event.name,
                 checkInTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
             )
         )
-
-
 
         return status
     }

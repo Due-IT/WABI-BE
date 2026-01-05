@@ -7,19 +7,30 @@ import org.springframework.stereotype.Component
 //@Async
 @Component
 class AttendanceEventListener(
-    private val meterRegistry: MeterRegistry
+    private val meterRegistry: MeterRegistry,
+    private val mailService: CheckInMailService
 ) {
 
     private val attendanceCounter = meterRegistry.counter("attendance.total.count")
 
     @EventListener
     fun handleAttendanceEvent(event: AttendanceCompletedEvent) {
-        // 1. 여기서 실제 알림 발송 로직이나 통계 업데이트를 수행합니다.
-        println("알림 발송 시작: 학생 ${event.studentId}님, 출석 완료!")
+        // 2. 실제 이메일 발송 로직 호출
+        try {
+            println("이메일 발송 시작: 학생 ${event.studentId}")
 
-        // 성과 비교를 위해 인위적인 지연(1초)을 추가해봅니다.
-        Thread.sleep(1000)
+            mailService.sendAttendanceMail(
+                event.studentId,
+                event.studentName,
+                event.studentEmail,
+                event.eventName,
+                event.checkInTime.toString()
+            )
 
-        println("알림 발송 완료: ${event.checkInTime}")
+            println("이메일 발송 완료")
+        } catch (e: Exception) {
+            // 이메일 발송 실패 시 로깅 (실제 서비스에서는 중요함)
+            println("이메일 발송 실패: ${e.message}")
+        }
     }
 }
