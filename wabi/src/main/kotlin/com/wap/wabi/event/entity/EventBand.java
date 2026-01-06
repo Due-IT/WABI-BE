@@ -1,15 +1,10 @@
 package com.wap.wabi.event.entity;
 
 import com.wap.wabi.band.entity.Band;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
-public class EventBand {
+public class EventBand { //특정 이벤트에 속한 밴드들
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
