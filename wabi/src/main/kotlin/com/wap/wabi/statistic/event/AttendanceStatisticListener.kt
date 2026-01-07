@@ -8,6 +8,7 @@ import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Timer
 import jakarta.transaction.Transactional
 import org.springframework.context.event.EventListener
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 
 @Component
@@ -16,7 +17,7 @@ class AttendanceStatisticListener(
     private val meterRegistry: MeterRegistry
 ) {
 
-    //    @Async
+    @Async
     @EventListener
     @Transactional
     fun handleAttendanceStatistic(event: AttendanceCompletedEvent) {

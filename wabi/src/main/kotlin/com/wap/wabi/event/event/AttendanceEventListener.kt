@@ -2,9 +2,10 @@ package com.wap.wabi.event.event
 
 import io.micrometer.core.instrument.MeterRegistry
 import org.springframework.context.event.EventListener
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 
-//@Async
+@Async
 @Component
 class AttendanceEventListener(
     private val meterRegistry: MeterRegistry,
