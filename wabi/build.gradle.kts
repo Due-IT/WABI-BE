@@ -21,6 +21,9 @@ repositories {
 }
 
 dependencies {
+    //Kafka
+    implementation("org.springframework.kafka:spring-kafka")
+
     //Email
     implementation("org.springframework.boot:spring-boot-starter-mail")
 
