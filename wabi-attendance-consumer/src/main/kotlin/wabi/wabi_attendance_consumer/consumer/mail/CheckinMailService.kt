@@ -1,5 +1,7 @@
 package wabi.wabi_attendance_consumer.consumer.mail
 
+import io.micrometer.core.instrument.Counter
+import io.micrometer.core.instrument.MeterRegistry
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 import wabi.wabi_attendance_consumer.dto.AttendanceCompletedEvent
@@ -7,7 +9,8 @@ import wabi.wabi_attendance_consumer.dto.AttendanceCompletedEvent
 @Async
 @Component
 class CheckinMailService(
-    private val mailSender: MailSender
+    private val mailSender: MailSender,
+    private val meterRegistry: MeterRegistry
 ) {
     fun handleAttendanceEvent(event: AttendanceCompletedEvent) {
         // 2. 실제 이메일 발송 로직 호출
