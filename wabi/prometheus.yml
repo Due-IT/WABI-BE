@@ -1,6 +1,11 @@
 scrape_configs:
-  - job_name: 'spring-actuator'
+  - job_name: 'wabi-server'
     metrics_path: '/actuator/prometheus'
-    scrape_interval: 5s
+    scrape_interval: 10s
     static_configs:
       - targets: ['host.docker.internal:8080'] # 스프링 서버 주소
+  - job_name: 'checkin-server'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['host.docker.internal:8081'] # 스프링 서버 주소
