@@ -5,6 +5,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### Grafana ###
+/grafana_data/
+
 ### STS ###
 application-local.properties
 .apt_generated
