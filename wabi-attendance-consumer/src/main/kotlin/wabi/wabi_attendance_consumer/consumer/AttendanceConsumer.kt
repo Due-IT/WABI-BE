@@ -7,8 +7,7 @@ import wabi.wabi_attendance_consumer.dto.AttendanceCompletedEvent
 
 @Component
 class AttendanceConsumer(
-    private val checkinMailService: CheckinMailService,
-    private val statisticsService: StatisticsService
+    private val checkinMailService: CheckinMailService
 ) {
     @KafkaListener(topics = ["checkin"])
     fun process(event: AttendanceCompletedEvent) {

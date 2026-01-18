@@ -9,7 +9,7 @@ import wabi.wabi_attendance_consumer.dto.AttendanceCompletedEvent
 @Async
 @Component
 class CheckinMailService(
-    private val mailSender: MailSender,
+    private val checkinMailSender: CheckinMailSender,
     private val meterRegistry: MeterRegistry
 ) {
     fun handleAttendanceEvent(event: AttendanceCompletedEvent) {
@@ -17,7 +17,7 @@ class CheckinMailService(
         try {
             println("이메일 발송 시작: 학생 ${event.studentId}")
 
-            mailSender.sendAttendanceMail(
+            checkinMailSender.sendAttendanceMail(
                 event.studentId,
                 event.studentName,
                 event.studentEmail,
@@ -25,7 +25,8 @@ class CheckinMailService(
                 event.checkInTime.toString()
             )
 
-//            recordEmailMetric(event, "success")
+
+            recordEmailMetric(event, "success")
 
             println("이메일 발송 완료")
         } catch (e: Exception) {

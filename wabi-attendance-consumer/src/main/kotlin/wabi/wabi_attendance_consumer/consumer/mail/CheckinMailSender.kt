@@ -5,7 +5,7 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
 
 @Service
-class MailSender(private val mailSender: JavaMailSender) {
+class CheckinMailSender(private val mailSender: JavaMailSender) {
     fun sendAttendanceMail(
         studentId: String,
         studentName: String,
